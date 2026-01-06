@@ -1,113 +1,1461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio</title>
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    #mobileMenu.active {
-      transform: translateX(0);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chauhan Nayan - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#0e9f6e',secondary:'#4b5563'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+       
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+       
+        .skill-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+       
+        .skill-progress {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #0e9f6e;
+        }
+       
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #0e9f6e;
+            position: absolute;
+            left: -8px;
+            top: 0;
+        }
+       
+        .timeline-line {
+            width: 2px;
+            background-color: #e5e7eb;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+       
+        .gallery-item {
+            transition: transform 0.3s ease;
+        }
+       
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+       
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+       
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+       
+        .card-3d:hover .card-shine {
+            opacity: 1;
+        }
+       
+        .card-shine {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+       
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+            overflow-y: auto;
+        }
+       
+        .modal.active {
+            display: flex;
+        }
+       
+        @media (max-width: 768px) {
+            .menu-mobile {
+                display: none;
+            }
+           
+            .menu-mobile.active {
+                display: block;
+            }
+        }
+       
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+       
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+       
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+       
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+       
+        .progress-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 4px;
+            z-index: 40;
+        }
+       
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(to right, #0e9f6e, #34d399);
+            width: 0%;
+        }
+    </style>
 </head>
+<body class="bg-gray-50">
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+ 
+    <!-- Mobile Menu Button -->
+    <div class="fixed top-4 right-4 z-40 lg:hidden">
+        <button id="menuToggle" class="bg-white p-2 rounded-full shadow-md !rounded-button">
+            <div class="w-8 h-8 flex items-center justify-center text-gray-700">
+                <i class="ri-menu-line ri-lg"></i>
+            </div>
+        </button>
+    </div>
+ 
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="menu-mobile fixed top-0 left-0 w-full h-full bg-white z-30 transform transition-transform duration-300 translate-x-full">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-end mb-8">
+                <button id="closeMenu" class="p-2 !rounded-button">
+                    <div class="w-8 h-8 flex items-center justify-center text-gray-700">
+                        <i class="ri-close-line ri-lg"></i>
+                    </div>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-6 text-lg font-medium">
+                <a href="#home" class="nav-link text-gray-800 hover:text-primary transition-colors">Home</a>
+                <a href="#about" class="nav-link text-gray-800 hover:text-primary transition-colors">About</a>
+                <a href="#experience" class="nav-link text-gray-800 hover:text-primary transition-colors">Experience</a>
+                <a href="#projects" class="nav-link text-gray-800 hover:text-primary transition-colors">Projects</a>
+                <a href="#gallery" class="nav-link text-gray-800 hover:text-primary transition-colors">Design Gallery</a>
+                <a href="#education" class="nav-link text-gray-800 hover:text-primary transition-colors">Education</a>
+                <a href="#contact" class="nav-link text-gray-800 hover:text-primary transition-colors">Contact</a>
+            </nav>
+            <div class="mt-auto">
+                <div class="flex space-x-4 mt-6">
+                    <a href="https://www.linkedin.com/in/nayan-chauhan-50334230b" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full">
+                            <i class="ri-linkedin-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://github.com/Nayan9687" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full">
+                            <i class="ri-github-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://www.instagram.com/rc_rajput007/" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full">
+                            <i class="ri-instagram-fill ri-lg"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Desktop Navigation -->
+    <header class="hidden lg:block fixed top-0 left-0 right-0 bg-white bg-opacity-95 shadow-sm z-40 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold text-gray-800">
+                    <span class="text-primary  ">Nayan</span> Chauhan
+                </div>
+                <nav class="flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Home</a>
+                    <a href="#about" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">About</a>
+                    <a href="#experience" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Experience</a>
+                    <a href="#projects" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Projects</a>
+                    <a href="#gallery" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Gallery</a>
+                    <a href="#education" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Education</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-primary font-medium transition-colors">Contact</a>
+                </nav>
+                <div class="flex space-x-4">
+                    <a href="https://www.linkedin.com/in/nayan-chauhan-50334230b"" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-linkedin-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://github.com/Nayan9687" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-github-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://www.instagram.com/rc_rajput007/" class="text-gray-600 hover:text-primary transition-colors">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-instagram-fill ri-lg"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+ 
 
-<body class="bg-gray-100 text-gray-800">
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen pt-20 lg:pt-0 flex items-center relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-gray-100 to-white opacity-70 -z-10"></div>
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent -z-10"></div>
+        
+        <div class="container mx-auto px-6 py-12 lg:py-0">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="w-full lg:w-1/2 mb-12 lg:mb-0 animate-fade-in" style="animation-delay: 0.2s;">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4">
+                        <span class="text-primary">SABINA</span><br>
+                        MANSURI
+                    </h1>
+                    <div class="h-1 w-32 bg-primary mb-6"></div>
+                    <h2 class="text-xl md:text-2xl font-medium text-gray-600 mb-8">SR.GRAPHICS DESIGNER</h2>
+                    <p class="text-gray-600 mb-8 max-w-lg">
+                        "Graphic Designer with 9 years of experience in print, digital, and branding. Passionate about visual storytelling and creating impactful, strategic design solutions."
 
-<!-- ================= HEADER ================= -->
-<header class="fixed top-0 w-full bg-white shadow z-50">
-  <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#projects" class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition-colors shadow-md">
+                            View Projects
+                        </a>
+                        <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#contact" class="bg-white text-gray-800 px-6 py-3 rounded-button font-medium border border-gray-300 hover:bg-gray-50 transition-colors shadow-sm">
+                            Contact Me
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 flex justify-center animate-fade-in" style="animation-delay: 0.4s;">
+                    <div class="relative w-full max-w-md perspective">
+                        <div class="card-3d bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <div class="card-shine"></div>
+                            <div class="p-8">
+                                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                    <div class="w-16 h-16 flex items-center justify-center text-primary">
+                                        <i class="ri-code-s-slash-line ri-3x"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-semibold text-center mb-4">Sr.Graphic Designer</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                                            <i class="ri-html5-line ri-lg"></i>
+                                        </div>
+                                        <span class="text-gray-700">Photoshop</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                                            <i class="ri-javascript-line ri-lg"></i>
+                                        </div>
+                                        <span class="text-gray-700">Illustrator</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                                            <i class="ri-CANVA-line ri-lg"></i>
+                                        </div>
+                                        <span class="text-gray-700">Premiere Pro</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                                            <i class="ri-palette-line ri-lg"></i>
+                                        </div>
+                                        <span class="text-gray-700">CorelDraw</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center text-primary mr-3">
+                                            <i class="ri-shopping-bag-line ri-lg"></i>
+                                        </div>
+                                        <span class="text-gray-700">CANVA</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white section visible">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-start">
+                <div class="w-full lg:w-1/3 mb-12 lg:mb-0">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">About Me</h2>
+                    <div class="h-1 w-20 bg-primary mb-8"></div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8 card-3d">
+                        <div class="card-shine"></div>
+                        <img src="https://ik.imagekit.io/liwn4veii/Untitled%20design.png" alt="Sabina Mansuri" class="w-full h-auto object-cover">
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">CONTACT</h3>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 flex items-center justify-center text-primary mr-4">
+                                <i class="ri-phone-line ri-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Phone</p>
+                                <p class="text-gray-800 font-medium">8128170971
+</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 flex items-center justify-center text-primary mr-4">
+                                <i class="ri-mail-line ri-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Email</p>
+                                <p class="text-gray-800 font-medium">sabina03mansuri@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 flex items-center justify-center text-primary mr-4">
+                                <i class="ri-map-pin-line ri-lg"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Address</p>
+                                <p class="text-gray-800 font-medium">19, Arkam Residency Sarkhej</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-2/3 lg:pl-16">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">MY EXPERTISE</h3>
+                    
+                    <div class="space-y-6 mb-12">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-gray-700">Photoshop</span>
+                                <span class="text-gray-600">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-gray-700">Illustrator</span>
+                                <span class="text-gray-600">50%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 50%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-gray-700">Premiere pro</span>
+                                <span class="text-gray-600">30%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 30%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-gray-700">CorelDraw</span>
+                                <span class="text-gray-600">70%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-gray-700">CANVA</span>
+                                <span class="text-gray-600">80%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold text-gray-800 mb-6">Diploma in Multimedia designing
+Ambedkar Institution</h3>
+                    <div class="space-y-8 relative">
+                        <div class="timeline-line h-full"></div>
+                        
+                        <div class="pl-8 relative">
+                            <div class="timeline-dot"></div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-2">Euphoria Infotech</h4>
+                            <p class="text-gray-600 mb-2">Euphoria Infotech Multimedia &amp; Graphic Designing training - 2011</p>
+                            <p class="text-gray-600">“I Completed My Multimedia &amp; Graphic Designing Training From Euphoria Infotech, Gaining Hands-on Experience In Creative Design Tools And Techniques. 
+This Training Helped Me Build Strong Skills In Visual Communication, Branding, And Digital Content Creation.”</p>
+                        </div>
+                        
+                        <div class="pl-8 relative">
+                            <div class="timeline-"></div>
+                            <h4 class="text-lg font-medium text-gray-800 mb-2"></h4>
+                            <p class="text-gray-600 mb-2"></p>
+                            <p class="text-gray-600"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <h1 class="text-xl font-bold">My Portfolio</h1>
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 bg-gray-50 section visible">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">WORK EXPERIENCE</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="max-w-10xl mx-auto">
+                <div class="space-y-12 relative">
+                    <div class="timeline-line h-full"></div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">TRIPOLLY STUDIO
+</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        2015-2016 [1 Year]
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-700 mb-4">Graphic Designing &amp; Architectural Line </h4>
+                            <p class="text-gray-600 mb-4">Working as a Graphic Designer, Managing Social Media </p><div class="space-y-2">
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Created Brand Identity Materials And Marketing Graphics For Social Media Campaigns</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Tasked to Make Craphics for Architecture line logo, Banner Visiting Card</p>
+                         <p></p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Social Media Post, Greeting Card, Invitation Card etc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Pixel Studio</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        2016-2017 [1 Year]
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-700 mb-4">Graphic Design &amp; Cataloque Design </h4>
+                            <p class="text-gray-600 mb-4">Working as a Photoshop and Graphics Designer</p>
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Branding &amp; Logo Creation, Social Media &amp; Advertising Designs, Print Materials</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Product Layout &amp; Presentation, Color, Size &amp; Fabric Details, Modern &amp; Trendy Themes</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Created Visual Assets And Marketing Materials for Digital Campaigns</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Twiffnow</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        2017-2020 [3 Years]
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-700 mb-4">Worked as both a Junior and Senior Graphic Designer
+</h4>
+                            <p class="text-gray-600 mb-4">Senior Graphic Designer</p>
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Tasked To Make Graphics for Social Media & Advertising Designs </p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Print Materials – Visiting Card, Brochure, Flyer, Packaging Design</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Posters, Banners, Ads, Reels</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d" style="transform: perspective(1000px) rotateX(0deg) rotateY(0deg);">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Sunflowmedia</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        2021-2026 [5 Years]
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-700 mb-4"> Graphics for Social Media & Digital Marketing
+</h4>
+                            <p class="text-gray-600 mb-4">Worked as both a Junior and Senior Graphic Designer</p>
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Tasked to make Graphics for Social Media Banner and Posts </p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">Graphic Design for Digital Marketing for Amazon Product Image, A+ content, Amazon Brand Story and Storefront Design</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2">
+                                        <i class="ri-check-line"></i>
+                                    </div>
+                                    <p class="text-gray-600">In house Logo, and Video Editing ,Post</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Desktop Nav -->
-    <nav class="hidden md:flex space-x-8">
-      <a href="#home" class="nav-link hover:text-blue-600">Home</a>
-      <a href="#about" class="nav-link hover:text-blue-600">About</a>
-      <a href="#experience" class="nav-link hover:text-blue-600">Experience</a>
-      <a href="#projects" class="nav-link hover:text-blue-600">Projects</a>
-      <a href="#gallery" class="nav-link hover:text-blue-600">Gallery</a>
-      <a href="#education" class="nav-link hover:text-blue-600">Education</a>
-      <a href="#contact" class="nav-link hover:text-blue-600">Contact</a>
-    </nav>
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-white section visible">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">MY PROJECTS</h2>
+                <div class="h-1 w-20 bg-primary mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Explore my latest projects, highlighting my expertise in Digital Marketing and Amazon Storefront Design.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="card-3d bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="card-shine"></div>
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/storefront%20image/golden.png" alt="Sici Technologies" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Golden Food</h3>
+                        <p class="text-gray-600 mb-4">Golden Crown offers naturally premium rice – aromatic, flavorful, and free from GMOs and harmful chemicals for a pure, wholesome experience.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Photoshop</span>
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">AI</span>
+                           
+                       </div>
+                        <div class="flex space-x-3">
+                            <a href="https://www.amazon.com/stores/page/7DFA7FFB-FC86-477A-81D4-4DB08C53519B/" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors flex-1 text-center whitespace-nowrap">
+                                Live Demo
+                            </a>
+                            <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#" target="_blank" class="bg-white text-gray-800 px-4 py-2 rounded-button font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex-1 text-center whitespace-nowrap">
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="card-3d bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="card-shine"></div>
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/storefront%20image/medjool%20dates.png?updatedAt=1767097443985" alt="Sahara Gold" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Sahara Gold</h3>
+                        <p class="text-gray-600 mb-4">Sahara Gold Medjool Dates are premium, soft, naturally sweet Medjool dates that make a healthy, high-fiber snack and energy booster with no added sugar.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Photoshop</span>
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">AI</span>
+                            
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="https://www.amazon.com/stores/page/5D9D0B82-E2D5-4056-9947-C456285D6F7F" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors flex-1 text-center whitespace-nowrap">
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/nayanchauhan2015/Eduzone_frontend" target="_blank" class="bg-white text-gray-800 px-4 py-2 rounded-button font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex-1 text-center whitespace-nowrap">
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="card-3d bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="card-shine"></div>
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/storefront%20image/life%20better.png?updatedAt=1767097443542" class="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Life's Better</h3>
+                        <p class="text-gray-600 mb-4">El Gordo is your trusted companion. Upgrade your hydration routine and experience the difference Life's Better Ltd El Gordo 40oz Tumbler can make. </p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">Photoshop</span>
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">AI</span>
+                            
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="https://www.amazon.co.uk/stores/page/9AAFD589-F6E4-43AF-9ED7-F8934E9CCBD9" target="_blank" class="bg-primary text-white px-4 py-2 rounded-button font-medium hover:bg-primary/90 transition-colors flex-1 text-center whitespace-nowrap">
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/nayanchauhan2015/my3dportfolio" target="_blank" class="bg-white text-gray-800 px-4 py-2 rounded-button font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex-1 text-center whitespace-nowrap">
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Mobile Button -->
-    <button id="menuBtn" class="md:hidden text-2xl">☰</button>
-  </div>
-</header>
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gray-50 section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">DESIGN GALLERY</h2>
+                <div class="h-1 w-20 bg-primary mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">A showcase of my graphic design work including Amazon Product Image , Digital Marketing, social media graphics, and more.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="0">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/logo/final%20logo.png?updatedAt=1767097440473" alt="Logo Design" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">Logo Design</h3>
+                        <p class="text-gray-600">this is logo</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="1">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/f%20(1).png?updatedAt=1767097442252" alt="Social Media Design" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">Social Media Design</h3>
+                        <p class="text-gray-600">Instagram campaign for fashion brand</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="2">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(7).png?updatedAt=1767097439816" alt="Product Images" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">Product Images</h3>
+                        <p class="text-gray-600">Amazon for Listing Page</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="3">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/D.png?updatedAt=1767097453605
+" alt="A+Content" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">A+Content</h3>
+                        <p class="text-gray-600">Amazon for Digital Marketing</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="4">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/marshmellow.png" alt="Packaging Design" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">Premium EBC</h3>
+                        <p class="text-gray-600">Amazon for Digital Marketing</p>
+                    </div>
+                </div>
+                
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item rounded-xl overflow-hidden shadow-md cursor-pointer" data-index="5">
+                    <img src="https://ik.imagekit.io/liwn4veii/website%20post%20material/VISITING%20CARD/IMG-20190316-WA0101.png?updatedAt=1767097442411" alt="Banner Design" class="w-full h-64 object-cover object-top">
+                    <div class="p-4 bg-white">
+                        <h3 class="text-lg font-medium text-gray-800">Visiting Card</h3>
+                        <p class="text-gray-600">T-shirts mockups and business cards</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <button id="viewMoreGallery" class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition-colors shadow-md whitespace-nowrap">
+                    View More Designs
+                </button>
+            </div>
+        </div>
+    </section>
 
-<!-- ================= MOBILE MENU ================= -->
-<div id="mobileMenu"
-  class="fixed top-0 right-0 w-64 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50 p-6">
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal">
+        <div class="container mx-auto px-6 py-10 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-white">Design Gallery</h3>
+                <button id="closeGallery" class="text-white hover:text-gray-300 transition-colors">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-close-line ri-2x"></i>
+                    </div>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="galleryGrid">
+                    <!-- Gallery images will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <nav class="flex flex-col space-y-6 text-lg font-medium">
-    <a href="#home" class="nav-link">Home</a>
-    <a href="#about" class="nav-link">About</a>
-    <a href="#experience" class="nav-link">Experience</a>
-    <a href="#projects" class="nav-link">Projects</a>
-    <a href="#gallery" class="nav-link">Gallery</a>
-    <a href="#education" class="nav-link">Education</a>
-    <a href="#contact" class="nav-link">Contact</a>
-  </nav>
-</div>
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-white section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">EDUCATION HISTORY</h2>
+                <div class="h-1 w-20 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="max-w-10xl mx-auto">
+                <div class="space-y-12 relative">
+                    <div class="timeline-line h-full"></div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">Bachelor of Commerce(IT)</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        2007 - 2010 | GRADUATED
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">College:</div>
+                                    <div class="text-gray-600">F.D. Arts & Commerece College for Women</div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">CGPA:</div>
+                                    <div class="text-gray-600">7.23</div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">Percentage(%):</div>
+                                    <div class="text-gray-600">68.6% 12th</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">HSC [12 TH]</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        March 2006
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">School:</div>
+                                    <div class="text-gray-600">Sawaminarayan Prathmic School</div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">Percentage(%):</div>
+                                    <div class="text-gray-600">69.71%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pl-8 relative">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white rounded-xl shadow-md p-6 card-3d">
+                            <div class="card-shine"></div>
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-gray-800">HSC [10 TH]</h3>
+                                <div class="flex items-center mt-2 md:mt-0">
+                                    <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                        March 2004
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">Institute:</div>
+                                    <div class="text-gray-600">Sawaminarayan Prathmic School, Gujarat Board</div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="w-32 min-w-[8rem] font-medium text-gray-700">Percentage(%):</div>
+                                    <div class="text-gray-600">56.00%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- ================= SECTIONS ================= -->
-<main class="pt-24">
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-50 section">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">GET IN TOUCH</h2>
+                <div class="h-1 w-20 bg-primary mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-2xl mx-auto">Have a project in mind or want to discuss potential opportunities? Feel free to reach out!</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="flex flex-col lg:flex-row">
+                        <div class="w-full lg:w-1/2 bg-primary p-8 text-white">
+                            <h3 class="text-xl font-semibold mb-6">Contact Information</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full mr-4">
+                                        <i class="ri-map-pin-line ri-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white/80 mb-1">Address</p>
+                                        <p class="font-medium">19, Arkam Residency Sarkhej</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full mr-4">
+                                        <i class="ri-mail-line ri-lg"></i>
+                                    </div>
+                                    <div class="w-2">
+                                        <p class="text-white/80 mb-1">Email</p>
+                                        <p class="font-medium">sabina03mansuri@gmail.com</p>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full mr-4">
+                                        <i class="ri-phone-line ri-lg"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-white/80 mb-1">Phone</p>
+                                        <p class="font-medium">8128170971</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-12">
+                                <h4 class="text-lg font-medium mb-4">Connect with me</h4>
+                                <div class="flex space-x-4">
+                                    <a href="https://www.linkedin.com/in/nayan-chauhan-50334230b" "="" class="text-white hover:text-white/80 transition-colors">
+                                        <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full">
+                                            <i class="ri-linkedin-fill ri-lg"></i>
+                                        </div>
+                                    </a>
+                                    <a href="https://github.com/Nayan9687" class="text-white hover:text-white/80 transition-colors">
+                                        <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full">
+                                            <i class="ri-github-fill ri-lg"></i>
+                                        </div>
+                                    </a>
+                                    <a href="https://www.instagram.com/sabina_mansuri6/" class="text-white hover:text-white/80 transition-colors">
+                                        <div class="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full">
+                                            <i class="ri-instagram-fill ri-lg"></i>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full lg:w-2/3 p-8">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-6">Send a Message</h3>
+                            
+                            <form id="contactForm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <label for="name" class="block text-gray-700 mb-2">Your Name</label>
+                                        <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Enter Your Name">
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="email" class="block text-gray-700 mb-2">Your Email</label>
+                                        <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="email@example.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="subject" class="block text-gray-700 mb-2">Subject</label>
+                                    <input type="text" id="subject" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Project Inquiry">
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label for="message" class="block text-gray-700 mb-2">Message</label>
+                                    <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Your message here..."></textarea>
+                                </div>
+                                
+                                <button type="submit" class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-primary/90 transition-colors shadow-md whitespace-nowrap">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <section id="home" class="min-h-screen flex items-center justify-center">
-    <h2 class="text-4xl font-bold">Home Section</h2>
-  </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="text-2xl font-bold mb-2">
+                        <span class="text-primary">Sabina</span> Mansuri
+                    </div>
+                    <p class="text-gray-400">Graphic Designer</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://www.linkedin.com/in/nayan-chauhan-50334230b" "="" class="text-gray-400 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-linkedin-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://github.com/Nayan9687" class="text-gray-400 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-github-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="https://www.instagram.com/rc_rajput007/" class="text-gray-400 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-instagram-fill ri-lg"></i>
+                        </div>
+                    </a>
+                    <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#" class="text-gray-400 hover:text-primary transition-colors">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <i class="ri-dribbble-fill ri-lg"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0"> 2026 Sabina Mansuri. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="file:///D:/saveweb2zip-com-nayan9687-github-io/saveweb2zip-com-nayan9687-github-io/index.html#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-  <section id="about" class="min-h-screen flex items-center justify-center bg-white">
-    <h2 class="text-4xl font-bold">About Section</h2>
-  </section>
+    <!-- Scripts -->
+    <script id="navigationScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.remove('translate-x-full');
+            });
+            
+            closeMenu.addEventListener('click', function() {
+                mobileMenu.classList.add('translate-x-full');
+            });
+            
+            // Close menu when nav link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Scroll progress bar
+            window.addEventListener('scroll', function() {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        });
+    </script>
 
-  <section id="experience" class="min-h-screen flex items-center justify-center">
-    <h2 class="text-4xl font-bold">Experience Section</h2>
-  </section>
+    <script id="animationScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Intersection Observer for section animations
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // 3D card effect
+            const cards = document.querySelectorAll('.card-3d');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                });
+            });
+        });
+    </script>
 
-  <section id="projects" class="min-h-screen flex items-center justify-center bg-white">
-    <h2 class="text-4xl font-bold">Projects Section</h2>
-  </section>
+    <script id="galleryScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const galleryModal = document.getElementById('galleryModal');
+            const closeGallery = document.getElementById('closeGallery');
+            const galleryGrid = document.getElementById('galleryGrid');
+            const viewMoreGallery = document.getElementById('viewMoreGallery');
+            
+            // Gallery images
+            const galleryImages = [
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/logo/final%20logo.png?updatedAt=176709744047",title: "LOGO",
+                    description: ""
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/Twakkal%20logo-01.png",
+                    title: "LOGO",
+                    description: ""
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/logo/FINAL%20LOGO-02.png",
+                    title: "LOGO",
+                    description: ""
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/a%20(2).png",
+                    title: "Food Instgram Post",
+                    description: ""
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/d%20(4).png",
+                    title: "Food Instgram Post",
+                    description: ""
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/b%20(1).png",
+                    title: "Food Instgram Post",
+                    description: "Social Media content for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/fashion%20post/a%20(1).png",
+                    title: "Fashion Instagram Post",
+                    description: "Social Media content for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/fashion%20post/first.png",
+                    title: "Fashion Instagram Post",
+                    description: "Social Media content for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/fashion%20post/a%20(1).jpg",
+                    title: "Fashion Instagram Post",
+                    description: "Social Media content for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/d%20(3).png",
+                    title: "Social Media Post",
+                    description: "Social Media content for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/d%20(9).png",
+                    title: "Social Media Post",
+                    description: "Social Media content for clothing brand"
+                },
 
-  <section id="gallery" class="min-h-screen flex items-center justify-center">
-    <h2 class="text-4xl font-bold">Gallery Section</h2>
-  </section>
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/f%20(3).png",
+                    title: "Social Media Post",
+                    description: "Social Media content for Restaurent"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/d%2010.png",
+                    title: "Social Media Post",
+                    description: "Social Media content for Restaurent"
+                },
 
-  <section id="education" class="min-h-screen flex items-center justify-center bg-white">
-    <h2 class="text-4xl font-bold">Education Section</h2>
-  </section>
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/w%20(3).png",
+                    title: "Social Media Post",
+                    description: "Mobile interface for shopping platform"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/w%20(4).png",
+                    title: "Social Media Post",
+                    description: "Web design for software service"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/e%20(3).png",
+                    title: "Social Media Post",
+                    description: "Web design for software service"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/e%20(2).png",
+                    title: "Social Media Post",
+                    description: "Product box design for beauty brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/social%20media%20post/e%20(4).png",
+                    title: "Social Media Post",
+                    description: "Product box design for beauty brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(7).png",
+                    title: "Amazon Product Image",
+                    description: "Product box design for beauty brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(6).png",
+                    title: "Amazon Product Image",
+                    description: "Product box design for beauty brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(2).png",
+                    title: "Amazon Product Image",
+                    description: "Product box design for beauty brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(3).png",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(4).png",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/Turkish%20Coffee%20Maker/1.%20COFFEE%20MAKER%20(5).png",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/3/4.png?",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/3/6.png",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/product%20images/3/7.png",
+                    title: "Amazon Product Image",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/D.png",
+                    title: "Amazon A+ Content",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/E.png",
+                    title: "Amazon A+ Content",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/boncharge.png",
+                    title: "Amazon A+ Content",
+                    description: "Corporate identity for consulting firm"
+                },                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/C.png",
+                    title: "Amazon A+ Content",
+                    description: "Corporate identity for consulting firm"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/B.png",
+                    title: "Amazon A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },                
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/sauna%20blanket.png",
+                    title: "Amazon A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },                
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC/A.png",
+                    title: "Amazon A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },                
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/ai%20ebc%20%20bonjour%20honey%20comb.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },                
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/marshmellow.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },                
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/WILD%20RICE.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/BLACK%20CHIA%20SEED.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/CREAM%20SPREAD.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/white%20pepper.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/PICHTSCHIO.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
 
-  <section id="contact" class="min-h-screen flex items-center justify-center">
-    <h2 class="text-4xl font-bold">Contact Section</h2>
-  </section>
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/EBC%20PREMIUM%20AI/MEDJOOL%20DSTES.png",
+                    title: "Premium A+ Content",
+                    description: "Apparel graphic for clothing brand"
 
-</main>
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/VISITING%20CARD/IMG-20190316-WA0129.png",
+                    title: "Business Card Design",
+                    description: "Apparel graphic for clothing brand"
 
-<!-- ================= JS ================= -->
-<script>
-  const menuBtn = document.getElementById("menuBtn");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const navLinks = document.querySelectorAll(".nav-link");
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/VISITING%20CARD/IMG-20190316-WA0029.png",
+                    title: "Business Card Design",
+                    description: "Apparel graphic for clothing brand"
 
-  menuBtn.addEventListener("click", () => {
-    mobileMenu.classList.toggle("active");
-    mobileMenu.classList.toggle("translate-x-full");
-  });
+                },
+                {
+                    src: "https://ik.imagekit.io/liwn4veii/website%20post%20material/VISITING%20CARD/IMG-20190713-WA0094.png",
+                    title: "Business Card Design",
+                    description: "Apparel graphic for clothing brand"
+                },
+            ];
+            
+            // Populate gallery modal
+            function populateGalleryModal() {
+                galleryGrid.innerHTML = '';
+                
+                galleryImages.forEach((image, index) => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'bg-white rounded-xl text-center overflow-hidden shadow-md';
+                    
+                    galleryItem.innerHTML = `
+                        <img src="${image.src}" alt="${image.title}" class="w-full h-50 object-cover object-top">
+                        <div class="p-4">
+                            <h3 class="text-lg font-medium text-gray-800">${image.title}</h3>
+                            
+                        </div>
+                    `;
+                    
+                    galleryGrid.appendChild(galleryItem);
+                });
+            }
+            
+            // Open gallery modal
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    populateGalleryModal();
+                    galleryModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            viewMoreGallery.addEventListener('click', function() {
+                populateGalleryModal();
+                galleryModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Close gallery modal
+            closeGallery.addEventListener('click', function() {
+                galleryModal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // Close modal when clicking outside content
+            galleryModal.addEventListener('click', function(e) {
+                if (e.target === galleryModal) {
+                    galleryModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
 
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      mobileMenu.classList.remove("active");
-      mobileMenu.classList.add("translate-x-full");
-    });
-  });
-</script>
+    <script id="formScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                
+                // Form validation
+                if (!name || !email || !subject || !message) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Simulate form submission
+                alert('Thank you for your message! I will get back to you soon.');
+                contactForm.reset();
+            });
+        });
+    </script>
 
-</body>
-</html>
+
+</body></html>
