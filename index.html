@@ -813,7 +813,7 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
                         <div class="bg-white rounded-xl shadow-md p-6 card-3d">
                             <div class="card-shine"></div>
                             <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                                <h3 class="text-xl font-semibold text-gray-800">Bachelor of Commerce(IT)</h3>
+                                <h3 class="text-xl font-semibold text-gray-800">Bachelor of Commerce</h3>
                                 <div class="flex items-center mt-2 md:mt-0">
                                     <div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
                                         2007 - 2010 | GRADUATED
@@ -877,7 +877,7 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
                             <div class="space-y-3">
                                 <div class="flex items-start">
                                     <div class="w-32 min-w-[8rem] font-medium text-gray-700">Institute:</div>
-                                    <div class="text-gray-600">Sawaminarayan Prathmic School, Gujarat Board</div>
+                                    <div class="text-gray-600">Swaminarayan Kanya Vidyalay, Gujarat Board</div>
                                 </div>
                                 <div class="flex items-start">
                                     <div class="w-32 min-w-[8rem] font-medium text-gray-700">Percentage(%):</div>
@@ -1043,43 +1043,32 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script id="navigationScript">
+     <!-- Scripts -->
+<script id="navigationScript">
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
-            const menuToggle = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const closeMenu = document.getElementById("closeMenu");
-  const navLinks = document.querySelectorAll(".nav-link");
-
-  menuToggle.addEventListener("click", () => {
-    mobileMenu.classList.add("active");
-    mobileMenu.classList.remove("translate-x-full");
-    mobileMenu.classList.add("translate-x-0");
-  });
-
-  closeMenu.addEventListener("click", () => {
-    mobileMenu.classList.remove("active");
-    mobileMenu.classList.remove("translate-x-0");
-    mobileMenu.classList.add("translate-x-full");
-  });
-
-  navLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      mobileMenu.classList.remove("active");
-      mobileMenu.classList.remove("translate-x-0");
-      mobileMenu.classList.add("translate-x-full");
-    });
-  });
-            
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.remove('translate-x-full');
+            });
+            closeMenu.addEventListener('click', function() {
+                mobileMenu.classList.add('translate-x-full');
+            });
+            // Close menu when nav link is clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            });
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
-                    
                     if (targetElement) {
                         window.scrollTo({
                             top: targetElement.offsetTop - 80,
@@ -1088,7 +1077,6 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
                     }
                 });
             });
-            
             // Scroll progress bar
             window.addEventListener('scroll', function() {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1097,7 +1085,7 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
                 document.getElementById('progressBar').style.width = scrolled + '%';
             });
         });
-    </script>
+</script>
 
     <script id="animationScript">
         document.addEventListener('DOMContentLoaded', function() {
