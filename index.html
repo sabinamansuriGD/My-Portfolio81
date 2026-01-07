@@ -1047,25 +1047,30 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
     <script id="navigationScript">
         document.addEventListener('DOMContentLoaded', function() {
             // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
-            const closeMenu = document.getElementById('closeMenu');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            menuToggle.addEventListener('click', function() {
-                mobileMenu.classList.remove('translate-x-full');
-            });
-            
-            closeMenu.addEventListener('click', function() {
-                mobileMenu.classList.add('translate-x-full');
-            });
-            
-            // Close menu when nav link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenu.classList.add('translate-x-full');
-                });
-            });
+            const menuToggle = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const closeMenu = document.getElementById("closeMenu");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  menuToggle.addEventListener("click", () => {
+    mobileMenu.classList.add("active");
+    mobileMenu.classList.remove("translate-x-full");
+    mobileMenu.classList.add("translate-x-0");
+  });
+
+  closeMenu.addEventListener("click", () => {
+    mobileMenu.classList.remove("active");
+    mobileMenu.classList.remove("translate-x-0");
+    mobileMenu.classList.add("translate-x-full");
+  });
+
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+      mobileMenu.classList.remove("translate-x-0");
+      mobileMenu.classList.add("translate-x-full");
+    });
+  });
             
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
