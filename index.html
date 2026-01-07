@@ -1044,38 +1044,31 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
     </footer>
 
      <!-- Scripts -->
-<script id="navigationScript">
+<script>
 document.addEventListener('DOMContentLoaded', function () {
  
-    // Elements
-    const menuToggle = document.getElementById('menuToggle'); // ☰ button
-    const closeMenu = document.getElementById('closeMenu');   // ❌ button
+    const menuToggle = document.getElementById('menuToggle');
+    const closeMenu = document.getElementById('closeMenu');
     const mobileMenu = document.getElementById('mobileMenu');
     const navLinks = document.querySelectorAll('.nav-link');
- 
-    // Safety check
-    if (!menuToggle || !closeMenu || !mobileMenu) return;
  
     // OPEN MENU
     menuToggle.addEventListener('click', function () {
         mobileMenu.classList.remove('translate-x-full');
-        menuToggle.classList.add('hidden');     // hide ☰
-        closeMenu.classList.remove('hidden');  // show ❌
+        document.body.style.overflow = 'hidden'; // stop background scroll
     });
  
-    // CLOSE MENU
+    // CLOSE MENU (Cross button)
     closeMenu.addEventListener('click', function () {
         mobileMenu.classList.add('translate-x-full');
-        closeMenu.classList.add('hidden');      // hide ❌
-        menuToggle.classList.remove('hidden');  // show ☰
+        document.body.style.overflow = '';
     });
  
-    // Close menu on nav link click
+    // CLOSE MENU when clicking nav links
     navLinks.forEach(link => {
         link.addEventListener('click', function () {
             mobileMenu.classList.add('translate-x-full');
-            closeMenu.classList.add('hidden');
-            menuToggle.classList.remove('hidden');
+            document.body.style.overflow = '';
         });
     });
  
@@ -1091,17 +1084,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
-    });
- 
-    // Scroll progress bar
-    window.addEventListener('scroll', function () {
-        const winScroll = document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        const progressBar = document.getElementById('progressBar');
-        if (progressBar) {
-            progressBar.style.width = scrolled + '%';
-        }
     });
  
 });
