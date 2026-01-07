@@ -107,13 +107,9 @@
         }
        
         @media (max-width: 768px) {
-            .menu-mobile {
-                display: none;
-            }
-           
-            .menu-mobile.active {
-                display: block;
-            }
+.menu-mobile {
+        display: block; /* ALWAYS present */
+    }
         }
        
         @keyframes fadeIn {
@@ -1045,32 +1041,30 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
 
      <!-- Scripts -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
- 
+document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menuToggle');
     const closeMenu = document.getElementById('closeMenu');
     const mobileMenu = document.getElementById('mobileMenu');
     const navLinks = document.querySelectorAll('.nav-link');
  
-    // OPEN MENU
-    menuToggle.addEventListener('click', function () {
+    if (!menuToggle || !closeMenu || !mobileMenu) return;
+ 
+    // Open menu
+    menuToggle.addEventListener('click', () => {
         mobileMenu.classList.remove('translate-x-full');
-        document.body.style.overflow = 'hidden'; // stop background scroll
+        mobileMenu.classList.add('translate-x-0');
     });
  
-    // CLOSE MENU (Cross button)
-    closeMenu.addEventListener('click', function () {
+    // Close menu (cross button)
+    closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-0');
         mobileMenu.classList.add('translate-x-full');
-        document.body.style.overflow = '';
     });
  
-    // CLOSE MENU when clicking nav links
+    // Close menu on link click
     navLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            mobileMenu.classList.add('translate-x-full');
-            document.body.style.overflow = '';
-        });
-    });
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-0');
  
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
