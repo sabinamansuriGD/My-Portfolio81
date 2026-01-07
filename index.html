@@ -1045,46 +1045,66 @@ This Training Helped Me Build Strong Skills In Visual Communication, Branding, A
 
      <!-- Scripts -->
 <script id="navigationScript">
-        document.addEventListener('DOMContentLoaded', function() {
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
-            const closeMenu = document.getElementById('closeMenu');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const navLinks = document.querySelectorAll('.nav-link');
-            menuToggle.addEventListener('click', function() {
-                mobileMenu.classList.remove('translate-x-full');
-            });
-            closeMenu.addEventListener('click', function() {
-                mobileMenu.classList.add('translate-x-full');
-            });
-            // Close menu when nav link is clicked
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    mobileMenu.classList.add('translate-x-full');
-                });
-            });
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            // Scroll progress bar
-            window.addEventListener('scroll', function() {
-                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = (winScroll / height) * 100;
-                document.getElementById('progressBar').style.width = scrolled + '%';
-            });
+document.addEventListener('DOMContentLoaded', function () {
+ 
+    // Elements
+    const menuToggle = document.getElementById('menuToggle'); // ☰ button
+    const closeMenu = document.getElementById('closeMenu');   // ❌ button
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
+ 
+    // Safety check
+    if (!menuToggle || !closeMenu || !mobileMenu) return;
+ 
+    // OPEN MENU
+    menuToggle.addEventListener('click', function () {
+        mobileMenu.classList.remove('translate-x-full');
+        menuToggle.classList.add('hidden');     // hide ☰
+        closeMenu.classList.remove('hidden');  // show ❌
+    });
+ 
+    // CLOSE MENU
+    closeMenu.addEventListener('click', function () {
+        mobileMenu.classList.add('translate-x-full');
+        closeMenu.classList.add('hidden');      // hide ❌
+        menuToggle.classList.remove('hidden');  // show ☰
+    });
+ 
+    // Close menu on nav link click
+    navLinks.forEach(link => {
+        link.addEventListener('click', function () {
+            mobileMenu.classList.add('translate-x-full');
+            closeMenu.classList.add('hidden');
+            menuToggle.classList.remove('hidden');
         });
+    });
+ 
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+ 
+    // Scroll progress bar
+    window.addEventListener('scroll', function () {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progressBar = document.getElementById('progressBar');
+        if (progressBar) {
+            progressBar.style.width = scrolled + '%';
+        }
+    });
+ 
+});
 </script>
 
     <script id="animationScript">
